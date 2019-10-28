@@ -15,15 +15,15 @@ message ToDo {
     google.protobuf.Timestamp reminder = 4;
 }
 
-// CreateRequest create a new todo task
+// CreateRequest describes a request to create a new todo task
 message CreateRequest {
     // API versioning: best practice to specify version explicitly
     string api = 1;
     // Task to add
-    ToDo todo = 2;
+    ToDo toDo = 2;
 }
 
-// CreateResponse returns id of a newly created todo task
+// CreateResponse describes a response with id of a newly created todo task
 message CreateResponse {
     // API versioning: best practice to specify version explicitly
     string api = 1;
@@ -31,8 +31,80 @@ message CreateResponse {
     int64 id = 2;
 }
 
+// ReadRequest describes a request to read ToDo task
+message ReadRequest {
+    // API version
+    string api = 1;
+    // UUID of the todo task
+    int64 id = 2;
+}
+
+// ReadResponse describes a response of ReadRequest with todo task
+message ReadResponse {
+    // API version
+    string api = 1;
+    // ToDo entity
+    ToDo toDo = 2;
+}
+
+// UpdateRequest contains todo entity data to be updated
+message UpdateRequest {
+    // API version
+    string api = 1;
+    // ToDo entity to update
+    ToDo toDo = 2;
+}
+
+// UpdateResponse contains status of UpdateRequest
+message UpdateResponse {
+    // API version
+    string api = 1;
+    // Contains number of entities have been updated
+    // 1 for successful update
+    int64 updated = 2;
+}
+
+// DeleteRequest contains id of the todo entity to be deleted
+message DeleteRequest {
+     // API version
+    string api = 1;
+    // UUID of todo entity to delete
+    int64 id = 2;
+}
+
+// DeleteResponse contains status of the DeleteRequest
+message DeleteResponse {
+     // API version
+    string api = 1;
+    // Contains number of entities have been deleted
+    // 1 for successful delete
+    int64 deleted = 2;
+}
+
+// ReadAllRequest contains request data to list all todo tasks
+message ReadAllRequest {
+    // API version
+    string api = 1;
+}
+
+// ReadAllResponse contains list all todo tasks
+message ReadAllResponse {
+    // API version
+    string api = 1;
+    // List of all todo tasks
+    repeated ToDo toDos = 2;
+}
+
 // ToDoService declares rpcs supported on ToDo tasks/entities
 service ToDoService {
-    // create a new ToDo task
+    // Create a new ToDo task
     rpc Create(CreateRequest) returns (CreateResponse);
+    // Read a todo task
+    rpc Read(ReadRequest) returns (ReadResponse);
+    // Update a todo task
+    rpc Update(UpdateRequest) returns (UpdateResponse);
+    // Delete a todo task
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+    // ReadAll todo tasks
+    rpc ReadAll(ReadAllRequest) returns (ReadAllResponse);
 }
